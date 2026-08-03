@@ -52,17 +52,23 @@ export const supabase = {
           order: (field: string, opts?: any) => chain,
           limit: (num: number) => chain,
           single: () => { isSingle = true; return chain; },
-          then: (resolve: any) => {
-            let data: any = [];
-            if (table === 'devices') data = dummyDevices;
-            if (table === 'inhalation_logs') data = dummyLogs;
-            if (table === 'asthma_diary') data = dummyDiary;
-            
-            if (isSingle) {
-              resolve({ data: data.length > 0 ? data[0] : null, error: null });
-            } else {
-              resolve({ data: data, error: null });
-            }
+          then: (resolve: any, reject: any) => {
+            const promise = new Promise((res) => {
+              let data: any = [];
+              if (table === 'devices') data = dummyDevices;
+              if (table === 'inhalation_logs') data = dummyLogs;
+              if (table === 'asthma_diary') data = dummyDiary;
+              
+              if (isSingle) {
+                res({ data: data.length > 0 ? data[0] : null, error: null });
+              } else {
+                res({ data: data, error: null });
+              }
+            });
+            return promise.then(resolve, reject);
+          },
+          catch: (reject: any) => {
+            return Promise.resolve({ data: null, error: null }).catch(reject);
           }
         };
         return chain;

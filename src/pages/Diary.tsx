@@ -23,6 +23,16 @@ const Diary = () => {
   const [inhlerUses, setInhalerUses] = useState(0);
   const [severity, setSeverity] = useState(5);
   const [loading, setLoading] = useState(false);
+  const [recentEntries, setRecentEntries] = useState<any[]>([]);
+
+  const fetchEntries = async (userId: string) => {
+    const { data } = await supabase
+      .from('asthma_diary')
+      .select('*')
+      .eq('user_id', userId)
+      .order('date', { ascending: false });
+    if (data) setRecentEntries(data);
+  };
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -40,6 +50,8 @@ const Diary = () => {
       setUser(session?.user ?? null);
       if (!session?.user) {
         navigate("/auth");
+      } else {
+        fetchEntries(session.user.id);
       }
     });
 
@@ -70,6 +82,7 @@ const Diary = () => {
       setMedicationTime("");
       setInhalerUses(0);
       setSeverity(5);
+      fetchEntries(user.id);
     } catch (error: any) {
       toast.error(error.message || "Failed to save diary entry");
     } finally {
@@ -174,6 +187,41 @@ const Diary = () => {
                   {loading ? "Saving..." : "Save Entry"}
                 </Button>
               </form>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="mt-8">
+          <Card>
+            <CardHeader>
+              <CardTitle>Recent Entries</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {recentEntries.length === 0 ? (
+                <div className="text-center py-8 text-muted-foreground">
+                  No diary entries yet. Start tracking your asthma today!
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {recentEntries.map((entry) => (
+                    <div key={entry.id} className="p-4 rounded-lg bg-muted/50">
+                      <div className="flex justify-between items-start mb-2">
+                        <div className="font-semibold text-lg">
+                          {format(new Date(entry.date), "MMMM d, yyyy")}
+                        </div>
+                        <div className="text-sm px-2 py-1 bg-background rounded-full border">
+                          Severity: {entry.symptom_severity}/10
+                        </div>
+                      </div>
+                      <p className="text-sm text-foreground/80 mb-2">{entry.symptom_notes}</p>
+                      <div className="flex gap-4 text-sm text-muted-foreground">
+                        {entry.triggers && <div><span className="font-medium">Triggers:</span> {entry.triggers}</div>}
+                        <div><span className="font-medium">Inhaler Uses:</span> {entry.inhaler_uses}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
