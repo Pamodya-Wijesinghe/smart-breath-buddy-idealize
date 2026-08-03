@@ -1,0 +1,7 @@
+project_id = "ffvzalawnjywqzdqsgsj"
+
+[functions.esp32-data]
+verify_jwt = false
+
+[functions.text-to-speech]
+verify_jwt = false
