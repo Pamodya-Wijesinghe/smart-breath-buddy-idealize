@@ -14,7 +14,12 @@ const dummyLogs = [
 ];
 
 const dummyDiary = [
-  { id: 'diary1', user_id: 'mock', date: new Date().toISOString(), symptom_notes: 'Felt short of breath after running.', triggers: 'Exercise', inhaler_uses: 2, symptom_severity: 6 }
+  { id: 'diary1', user_id: 'mock', date: new Date().toISOString(), symptom_notes: 'Felt short of breath after morning run. Used inhaler before exercise as precaution.', triggers: 'Exercise, cold air', medication_time: '07:30', inhaler_uses: 2, symptom_severity: 6 },
+  { id: 'diary2', user_id: 'mock', date: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), symptom_notes: 'Mild wheezing in the evening. Possibly triggered by dust while cleaning the house.', triggers: 'Dust, household cleaning', medication_time: '18:00', inhaler_uses: 1, symptom_severity: 4 },
+  { id: 'diary3', user_id: 'mock', date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2).toISOString(), symptom_notes: 'Good day overall! No significant symptoms. Breathing felt comfortable throughout the day.', triggers: 'None', medication_time: '08:00', inhaler_uses: 0, symptom_severity: 2 },
+  { id: 'diary4', user_id: 'mock', date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString(), symptom_notes: 'Chest tightness in the morning due to cold weather. Took reliever inhaler twice.', triggers: 'Cold weather, smoke from neighbors', medication_time: '06:45', inhaler_uses: 3, symptom_severity: 7 },
+  { id: 'diary5', user_id: 'mock', date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5).toISOString(), symptom_notes: 'Visited a friend with a cat. Allergy symptoms developed within an hour. Had to leave early.', triggers: 'Pet dander (cat), pollen', medication_time: '14:30', inhaler_uses: 3, symptom_severity: 8 },
+  { id: 'diary6', user_id: 'mock', date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 7).toISOString(), symptom_notes: 'Slight coughing at night. Slept propped up on two pillows. Symptoms settled by morning.', triggers: 'Night-time, possible reflux', medication_time: '22:00', inhaler_uses: 1, symptom_severity: 3 },
 ];
 
 let listeners: any[] = [];
